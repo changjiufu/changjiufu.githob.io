@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="root"></div>
+    <script src="reactjs/react-development.js"></script>
+    <script src="reactjs/react-dom.development.js"></script>
+    <script src="reactjs/babel-core.min.js"></script>
+    <script type="text/babel">
+        console.log(ReactDOM);
+        // 无状态组件
+        /*function Person (props){
+            console.log(props);
+            return (
+                <h1>hello {props.text}</h1>
+            )
+        }
+        const test = '111';
+        ReactDOM.render(
+            <Person text={test}/>,
+            document.getElementById('root')
+        )*/
+
+        // 有状态组件
+        // props 用于组件通信传值 state 用于更改组件内部的值（动态的）
+        class Son extends React.Component {
+            constructor(props) {
+                // 相当于vue的 data 用于定义变量
+                super(props);
+                this.state = {
+                    name: '常九福',
+                    count: 0
+                }
+                // this.change = this.change.bind(this);
+            }
+
+            change(num){
+                console.log(this, 1111);
+                this.setState({
+                    count: this.state.count + this.props.num
+                })
+            }
+        // <!--<button onClick={()=>this.change.call(this)}>增加字符串</button>-->
+            render() {
+                console.log(this, 2222)
+                return (
+                    <div>
+                        <h1>hello {this.state.name} {this.props.num} {this.state.count}!</h1>
+                        <button onClick={this.change.bind(this, 10)}>增加字符串</button>
+                    </div>
+                )
+            }
+        }
+        // 父组件
+        class Parent extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    num: 18
+                }
+            }
+            changeSon(num){
+                this.setState({
+                    num: this.state.num + num
+                })
+                // 通过ref更改子组件
+                // this.refs.son.change(100);
+            }
+            render() {
+                console.log(this)
+                return (
+                    <div>
+                        {this.state.age}
+                        <Son ref="son" num={this.state.num}/>
+                        <button onClick={this.changeSon.bind(this, 20)}>父组件改变子组件count</button>
+                    </div>
+                )
+            }
+        }
+        ReactDOM.render(
+            <Parent/>,
+            document.getElementById('root')
+        )
+    </script>
+</body>
+</html>
